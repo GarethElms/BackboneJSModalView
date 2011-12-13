@@ -6,11 +6,12 @@ var ModalView =
         modalContainer: null,
         defaultOptions:
 		{
-			placement: "center",
 			fadeInDuration:150,
 			fadeOutDuration:150,
 			showCloseButton:true,
-			bodyOverflowHidden:false
+			bodyOverflowHidden:false,
+			closeImageUrl: "close-modal.png",
+			closeImageHoverUrl: "close-modal-hover.png",
 		},
 
         initialize:
@@ -137,29 +138,27 @@ var ModalView =
                 //Set the center alignment padding + border see css style
                 var $el = $(this.el);
 
-                var positionX = 0;
-                var positionY = 0;
-
-                if( this.options.placement === "pointer")
-                {
-                    // Place the modal dialog next to the mouse cursor
-                }
-                else
-                {
-                    // "center" is the default (centre of the screen)
-                    var centreY = $(window).height() / 2;
-		            positionY = centreY  - ($el.height() / 2);
-		            positionX = centreY - ($el.width() / 2);
-                }
+				var centreY = $(window).height() / 2;
+				var positionY = centreY  - ($el.height() / 2);
+				var positionX = centreY - ($el.width() / 2);
 
                 // Overriding the coordinates with explicit values if they are passed in
-                if( typeof( options.x) !=- "undefined"){
-                    positionX = options.x;}
+                if( typeof( this.options.x) !== "undefined"){
+                    positionX = this.options.x;}
 
-                if( typeof( options.y) !=- "undefined"){
-                    positionY = options.y;}
+                if( typeof( this.options.y) !== "undefined"){
+                    positionY = this.options.y;}
 		
 		        $el.addClass( "modal");
+				$el.css(
+					{
+						"border": "2px solid #111",
+						"background-color": "#fff",
+						"border-radius": "5px;",
+						"-webkit-box-shadow": "0px 0px 15px 4px rgba(0, 0, 0, 0.5)",
+						"-moz-box-shadow": "0px 0px 15px 4px rgba(0, 0, 0, 0.5)",
+						"box-shadow": "0px 0px 15px 4px rgba(0, 0, 0, 0.5)"
+					});
 
                 this.showModalBlanket();
                 this.keyup = _.bind( this.keyup, this);
@@ -196,17 +195,17 @@ var ModalView =
 									"right":"-10px",
 									"width":"32px",
 									"height":"32px",
-									"background":"transparent url(/resources/shared/images/close-modal.png) top left no-repeat",
+									"background":"transparent url(" + view.options.closeImageUrl + ") top left no-repeat",
 									"text-decoration":"none"})
                             .appendTo( this.modalContainer)
                             .hover(
                                 function()
                                 {
-                                    $(this).css( "background-image", "url(/resources/shared/images/close-modal-hover.png) !important");
+                                    $(this).css( "background-image", "url(" + view.options.closeImageHoverUrl + ") !important");
                                 },
                                 function()
                                 {
-                                    $(this).css( "background-image", "url(/resources/shared/images/close-modal.png) !important");
+                                    $(this).css( "background-image", "url(" + view.options.closeImageUrl + ") !important");
                                 })
                             .click(
                                 function( event)

@@ -9,110 +9,39 @@
 	<script src="lib/underscore-min.js" type="text/javascript"></script>
 	<script src="lib/backbone.js" type="text/javascript"></script>
 	<script src="Backbone.ModalDialog.js" type="text/javascript"></script>
+	<script src="demo.js" type="text/javascript"></script>
 </head>
 <body>
 	<div id="container">
 		<h1>Backbone.js Modal Dialog</h1>
-		<p>
-			<a href="#" id="testButton">Test</a>
-		</p>
-		<ul id="people">
-		</ul>
+		<div id="content">
+			<p>
+				<a href="#" id="addPersonButton">Add another person to the list</a>
+			</p>
+			<ul id="people">
+			</ul>
+		</div>
+	</div>
+	<div id="footer">
+		<a href="https://github.com/GarethElms/BackboneJSModalView">Backbone.js Modal View</a> demo By <a href="http://www.garethelms.org">Gareth Elms</a> 2011
 	</div>
 </body>
 
 <script type="text/javascript">
-PersonModel = Backbone.Model.extend(
-	{
-		initialize: function() {}
-	});
-	
-PeopleCollection = Backbone.Collection.extend(
-	{
-		model: PersonModel
-	});
-	
-AddPersonView = ModalView.extend(
-	{
-		name: "AddPersonView",
-		model: PersonModel,
-		templateHtml:
-			"<div class='form'>" +
-				"<label for='personName'>Person's name</label>" +
-				"<input type='text' id='personName' />" +
-				"<input id='addPersonButton' type='button' value='Add person' />" +
-			"</div>",
-		initialize:
-			function()
-			{
-				_.bindAll( this, "render");
-				this.template = _.template( this.templateHtml);
-			},
-		events:
-			{
-				"click #addPlayerByEmailButton": "addPlayer"
-			},
-		addPlayer:
-			function()
-			{
-				alert( "Do something now...");
-			},
-		render:
-			function()
-			{
-				$(this.el).html( this.template());
-				return this;
-			}
-	});
-
-PersonItemView = Backbone.View.extend(
-	{
-		templateHtml:
-            "<span>{{name}}</span>",
-		tagName: "li",
-		initialize:
-			function()
-			{
-				this.template = _.template( this.templateHtml);
-			},
-		render:
-			function()
-			{
-				$(this.el).html( this.template( this.model.toJSON()));
-				return this;
-			}
-	});
-
-PeopleListView = Backbone.View.extend(
-	{
-		initialize:
-			function()
-			{
-			},
-		render:
-			function()
-			{
-				var people = [];
-				this.collection.each(
-					function( model)
-					{
-						var view = new PersonItemView( {model : model});
-						people.push( view.render().el);
-					});
-
-				$(this.el).append( people);
-				return this;
-			}
-	});
-
 $(document).ready(
 	function()
 	{
 		_.templateSettings = {interpolate : /\{\{(.+?)\}\}/g};
-		$("#testButton").click(
+		$("#addPersonButton").click(
 			function( event)
 			{
-				
+				// Create the modal view
+				var view = new AddPersonView();
+				view.render().showModal(
+					{
+						x: event.pageX,
+						y: event.pageY
+					});
 			});
 
 		_people = new PeopleCollection();

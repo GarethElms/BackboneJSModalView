@@ -1,4 +1,19 @@
-body {margin:0; padding:0; background-color:#754A0B; font-family:Verdana,Arial,Helvetica,sans-serif;
+body {margin:0; padding:0; background-color:#F8F7DB; font-family:Arial,Helvetica,sans-serif;
 	color:#091350;}
-#container {width:600px; padding:20px; margin:20px auto; background-color:#F7D683; min-height:600px;
-	border-radius:6px; border:1px solid #091350;}
+#container {width:600px; margin:50px auto 20px; background-color:#FEFDEB; min-height:600px;
+	border-radius:6px;
+	-moz-box-shadow: 0 0 3px 2px #A1B41D;
+	-webkit-box-shadow: 0 0 3px 2px #A1B41D;
+	box-shadow: 0 0 3px 2px #A1B41D;}
+#content {padding:10px 30px 30px;}
+#footer {margin:0 auto; width:560px; font-size:70%; font-family:verdana;}
+h1 {color:#518108; font-weight:normal; margin-top:0; padding:30px; background-color:#E7F295; font-weight:normal; border-bottom:1px solid #A1B41D; box-shadow: 0 0 25px 2px #A1B41D; font-size:150%;}
+
+ul {margin:30px 0 0; padding-left:25px;}
+ul li {margin:0; padding:0;}
+ul li {list-style-image:url(tick.png); margin-bottom:7px;}
+ul li span {position:relative; top:-2px;}
+
+form {padding:20px;}
+label {padding-right:10px;}
+input[type=text] {margin-right:10px;}
