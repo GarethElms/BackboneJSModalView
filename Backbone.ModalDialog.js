@@ -128,11 +128,6 @@ var ModalView =
         showModal:
             function( options)
             {
-                if( event != null && event.type === "click" && typeof( event.stopPropagation) === "function")
-                {
-                    event.stopPropagation();
-                }
-
                 this.options = $.extend({}, this.defaultOptions, options);
 
                 //Set the center alignment padding + border see css style

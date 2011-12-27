@@ -34,6 +34,9 @@ $(document).ready(
 		$("#addPersonButton").click(
 			function( event)
 			{
+				event.preventDefault();
+				event.stopPropagation();
+				
 				// Create the modal view
 				var view = new AddPersonView();
 				view.render().showModal(

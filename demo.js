@@ -29,8 +29,9 @@ AddPersonView = ModalView.extend(
 				"submit form": "addPerson"
 			},
 		addPerson:
-			function()
+			function( event)
 			{
+				event.preventDefault();
 				this.hideModal();
 				_people.add( new PersonModel({name: $("#personName").val()}));
 			},
