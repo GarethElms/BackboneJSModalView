@@ -75,7 +75,7 @@ This is false by default. If this is true then the scroll bar is disabled and us
 The first form control will automatically be given focus.
 
 ### targetContainer
-By default the modal dialog is appended to document.body and can be positioned absolutely (relative to document body) using the x and/or y options or the top/left/right/bottom css options. If you want to position the dialog relative to a container element then pass in the jquery object here. See the "Anchored to header (left)" example on the [demo page] (https://github.com/GarethElms/BackboneJSModalView/blob/master/index.html).
+By default the modal dialog is appended to document.body and can be positioned absolutely (relative to document body) using the x and/or y options or the top/left/right/bottom css options. If you want to position the dialog relative to a container element then pass in the jquery object here. See the "Anchored to header (left)" example on the [demo page] (https://github.com/GarethElms/BackboneJSModalView/blob/master/demo.html).
 
 ### slideFromAbove
 To have the dialog slide down from above set this to true.
