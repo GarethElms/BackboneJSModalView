@@ -13,27 +13,61 @@ AddPersonView = ModalView.extend(
 		name: "AddPersonView",
 		model: PersonModel,
 		templateHtml:
+			"<div class='modal-header'>Add a new person to the list</div>" +
 			"<form>" +
-				"<label for='personName'>Person's name</label>" +
-				"<input type='text' id='personName' />" +
-				"<input id='addPersonButton' type='submit' value='Add person' />" +
+                "<table class='compact'>" +
+                    "<tr><td>" +
+				        "<label for='name'>Name</label>" +
+                        "</td><td>" +
+				        "<input type='text' id='name' />" +
+                    "</td></tr>" +
+                    "<tr><td>" +
+				        "<label for='email'>Email</label>" +
+                        "</td><td>" +
+				        "<input type='text' id='email' />" +
+                    "</td></tr>" +
+					"<tr><td>" +
+				        "<label for='phone'>Phone</label>" +
+                        "</td><td>" +
+				        "<input type='text' id='phone' />" +
+                    "</td></tr>" +
+                    "<tr><td></td><td>" +
+				        "<input id='addPersonButton' type='submit' value='Add person' />" +
+                    "</td></tr>" +
+                "</table>" +
 			"</form>",
 		initialize:
 			function()
 			{
 				_.bindAll( this, "render");
 				this.template = _.template( this.templateHtml);
+				this.model.bind( "isValid", this.modelIsValid, this);
+                this.model.bind( "isInvalid", this.modelIsInvalid, this);
 			},
 		events:
 			{
 				"submit form": "addPerson"
 			},
+		modelIsValid:
+            function( model)
+            {
+				$("#addPersonButton").enable();
+            },
+        modelIsInvalid:
+            function( model)
+            {
+				$("#addPersonButton").disable();
+            },
 		addPerson:
 			function( event)
 			{
 				event.preventDefault();
 				this.hideModal();
-				_people.add( new PersonModel({name: $("#personName").val()}));
+				_people.add(
+					new PersonModel({
+						name: $("#name").val(),
+						email: $("#email").val(),
+						phone: $("#phone").val()}));
 			},
 		render:
 			function()
@@ -46,7 +80,7 @@ AddPersonView = ModalView.extend(
 PersonItemView = Backbone.View.extend(
 	{
 		templateHtml:
-            "<span>{{name}}</span>",
+            "<div><span>{{name}}</span><br /><em>{{email}}</em><br /><em>{{phone}}</em></div>",
 		tagName: "li",
 		initialize:
 			function()

@@ -1,3 +1,11 @@
+// Backbone.ModalDialog.js v0.2
+//
+// Copyright (C)2012 Gareth Elms
+// Distributed under MIT License
+//
+// Documentation and full license availabe at:
+// https://github.com/GarethElms/BackboneJSModalView
+
 var ModalView =
     Backbone.View.extend(
     {
@@ -10,8 +18,24 @@ var ModalView =
 			fadeOutDuration:150,
 			showCloseButton:true,
 			bodyOverflowHidden:false,
-			closeImageUrl: "close-modal.png",
-			closeImageHoverUrl: "close-modal-hover.png",
+            setFocusOnFirstFormControl:true,
+            targetContainer: document.body,
+            slideFromAbove: false,
+            slideFromBelow: false,
+            slideDistance: 150,
+			closeImageUrl: "/resources/shared/images/close-modal.png",
+			closeImageHoverUrl: "/resources/shared/images/close-modal-hover.png",
+            css:
+            {
+                "border": "2px solid #111",
+			    "background-color": "#fff",
+			    "-webkit-box-shadow": "0px 0px 15px 4px rgba(0, 0, 0, 0.5)",
+			    "-moz-box-shadow": "0px 0px 15px 4px rgba(0, 0, 0, 0.5)",
+			    "box-shadow": "0px 0px 15px 4px rgba(0, 0, 0, 0.5)",
+                "-webkit-border-radius": "10px",
+                "-moz-border-radius": "10px",
+                "border-radius": "10px"
+            }
 		},
 
         initialize:
@@ -22,7 +46,7 @@ var ModalView =
             {
             },
        
-       showModalBlanket:
+        showModalBlanket:
             function()
             {
                 return this.ensureModalBlanket().fadeIn( this.options.fadeInDuration);
@@ -35,14 +59,30 @@ var ModalView =
             },
 
         ensureModalContainer:
-            function()
+            function( target)
             {
+                if( target != null)
+                {
+                    // A target is passed in, we need to re-render the modal container into the target.
+                    if( this.modalContainer != null)
+                    {
+                        this.modalContainer.remove();
+                        this.modalContainer = null;
+                    }
+                }
+
                 if( this.modalContainer == null)
                 {
                     this.modalContainer =
                         $("<div id='modalContainer'>")
-                            .css( {"z-index":"99999", "position":"relative"})
-                            .appendTo( document.body);
+                            .css({
+                                "z-index":"99999",
+                                "position":"relative",
+                                "-webkit-border-radius": "6px",
+                                "-moz-border-radius": "6px",
+                                "border-radius": "6px"
+                                })
+                            .appendTo( target);
                 }
 
                 return this.modalContainer;
@@ -66,7 +106,7 @@ var ModalView =
                                     width: "100%", // ...and full width
                                     opacity: 0.5, // Make it slightly transparent
                                     backgroundColor: "#000",
-                                    "z-index": 5000
+                                    "z-index": 99900
                                 })
                             .appendTo( document.body)
                             .hide();
@@ -87,10 +127,17 @@ var ModalView =
         click:
             function( event)
             {
-                if( ! jQuery.contains( this.el, event.target))
+                if( ! jQuery.contains( this.el, event.target) && 
+                    ! this.click_IsInside_JqueryUICalender( event))
                 {
                     this.hideModal();
                 }
+            },
+
+        click_IsInside_JqueryUICalender:
+            function( event)
+            {
+                return ($(event.target).parentsUntil( "body", ".ui-datepicker").size() > 0);
             },
 
         setFocusOnFirstFormControl:
@@ -106,6 +153,7 @@ var ModalView =
         hideModal:
             function()
             {
+                this.trigger( "closeModalWindow");
                 this.hideModalBlanket();
                 $(document.body).unbind( "keyup", this.keyup);
                 $(document.body).unbind( "click", this.click);
@@ -125,35 +173,42 @@ var ModalView =
                         });
             },
 
+        getCoordinate:
+            function( coordinate, css)
+            {
+                if( typeof( css[coordinate]) !== "undefined")
+                {
+                    var value = css[coordinate];
+                    delete css[coordinate]; // Don't apply positioning to the $el, we apply it to the modal container. Remove it from options.css
+
+                    return value;
+                }
+            },
+
         showModal:
             function( options)
             {
-                this.options = $.extend({}, this.defaultOptions, options);
+                this.defaultOptions.targetContainer = document.body;
+                this.options = $.extend( true, {}, this.defaultOptions, options);
 
                 //Set the center alignment padding + border see css style
                 var $el = $(this.el);
 
 				var centreY = $(window).height() / 2;
-				var positionY = centreY  - ($el.height() / 2);
-				var positionX = centreY - ($el.width() / 2);
-
-                // Overriding the coordinates with explicit values if they are passed in
-                if( typeof( this.options.x) !== "undefined"){
-                    positionX = this.options.x;}
-
-                if( typeof( this.options.y) !== "undefined"){
-                    positionY = this.options.y;}
+                var centreX = $(window).width() / 2;
+                var modalContainer = this.ensureModalContainer( this.options.targetContainer).empty();
 		
 		        $el.addClass( "modal");
-				$el.css(
-					{
-						"border": "2px solid #111",
-						"background-color": "#fff",
-						"border-radius": "5px;",
-						"-webkit-box-shadow": "0px 0px 15px 4px rgba(0, 0, 0, 0.5)",
-						"-moz-box-shadow": "0px 0px 15px 4px rgba(0, 0, 0, 0.5)",
-						"box-shadow": "0px 0px 15px 4px rgba(0, 0, 0, 0.5)"
-					});
+
+                var coords = {
+                    top: this.getCoordinate( "top", this.options.css),
+                    left: this.getCoordinate( "left", this.options.css),
+                    right: this.getCoordinate( "right", this.options.css),
+                    bottom: this.getCoordinate( "bottom", this.options.css),
+                    isEmpty: function(){return (this.top == null && this.left == null && this.right == null && this.bottom == null);}
+                    };
+
+				$el.css( this.options.css);
 
                 this.showModalBlanket();
                 this.keyup = _.bind( this.keyup, this);
@@ -167,17 +222,39 @@ var ModalView =
                     $(document.body).css( "overflow", "hidden");
                 }
 
-                this.ensureModalContainer()
-                    .empty()
-                    .append( $el)
-                    .css({
+                modalContainer
+                    .append( $el);
+
+                modalContainer.css({
                         "opacity": 0,
                         "position": "absolute",
-			            "top": positionY + "px",
-			            "left": positionX + "px",
                         "z-index": 999999});
 
-                this.setFocusOnFirstFormControl();
+                // Only apply default centre coordinates if no css positions have been supplied
+                if( coords.isEmpty())
+                {
+                    var positionY = centreY  - ($el.outerHeight() / 2);
+					// Overriding the coordinates with explicit values if they are passed in
+                    if( typeof( this.options.y) !== "undefined"){positionY = this.options.y;}
+                    modalContainer.css({"top": positionY + "px"});
+
+                    var positionX = centreX - ($el.outerWidth() / 2);
+					// Overriding the coordinates with explicit values if they are passed in
+                    if( typeof( this.options.x) !== "undefined"){ positionX = this.options.x;}
+                    modalContainer.css({"left": positionX + "px"});
+                }
+                else
+                {
+                    if( coords.top != null) modalContainer.css({"top": coords.top});
+                    if( coords.left != null) modalContainer.css({"left": coords.left});
+                    if( coords.right != null) modalContainer.css({"right": coords.right});
+                    if( coords.bottom != null) modalContainer.css({"bottom": coords.bottom});
+                }
+
+                if( this.options.setFocusOnFirstFormControl)
+                {
+                    this.setFocusOnFirstFormControl();
+                }
 
                 if( this.options.showCloseButton)
                 {
@@ -210,13 +287,21 @@ var ModalView =
                                 });
                 }
 
-                this.modalContainer.animate(
-                    {
-                        opacity: 1
-                    },
-                    this.options.fadeInDuration,
-                    function()
-                    {
-                    });
+                var animateProperties = {opacity:1};
+                var modalOffset = modalContainer.offset();
+                    
+                if( this.options.slideFromAbove)
+                {
+                    modalContainer.css({"top": (modalOffset.top - this.options.slideDistance) + "px"});
+                    animateProperties.top = coords.top;
+                }
+
+                if( this.options.slideFromBelow)
+                {
+                    modalContainer.css({"top": (modalOffset.top + this.options.slideDistance) + "px"});
+                    animateProperties.top = coords.top;
+                }
+
+                this.modalContainer.animate( animateProperties, this.options.fadeInDuration);
             }
     });
