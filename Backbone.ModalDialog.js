@@ -127,17 +127,10 @@ var ModalView =
         click:
             function( event)
             {
-                if( ! jQuery.contains( this.el, event.target) && 
-                    ! this.click_IsInside_JqueryUICalender( event))
+                if( event.target.id == "modal-blanket")
                 {
                     this.hideModal();
                 }
-            },
-
-        click_IsInside_JqueryUICalender:
-            function( event)
-            {
-                return ($(event.target).parentsUntil( "body", ".ui-datepicker").size() > 0);
             },
 
         setFocusOnFirstFormControl:
