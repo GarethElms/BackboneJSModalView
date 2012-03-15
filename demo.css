@@ -1,6 +1,6 @@
 body {margin:0; padding:0; background-color:#F8F7DB; font-family:Arial,Helvetica,sans-serif;
 	color:#091350;}
-#container {width:600px; margin:50px auto 20px; background-color:#FEFDEB; min-height:600px; overflow:auto;
+#container {width:600px; margin:50px auto 20px; background-color:#FEFDEB; min-height:600px; overflow:visible;
 	border-radius:6px;
 	-moz-box-shadow: 0 0 3px 2px #A1B41D;
 	-webkit-box-shadow: 0 0 3px 2px #A1B41D;
@@ -9,7 +9,7 @@ body {margin:0; padding:0; background-color:#F8F7DB; font-family:Arial,Helvetica
 #content {padding:10px 30px 30px; width:250px; float:left;}
 #footer {margin:0 auto; width:550px; font-size:70%; font-family:verdana;}
 h1 {color:#518108; font-weight:normal; margin-top:0; padding:30px; background-color:#E7F295;
-	font-weight:normal; border-bottom:1px solid #A1B41D; box-shadow: 0 0 25px 2px #A1B41D; font-size:150%;}
+	font-weight:normal; border-bottom:1px solid #A1B41D; font-size:150%;}
 
 ul {margin:30px 0 0; padding-left:25px;}
 ul li {margin:0; padding:0;}

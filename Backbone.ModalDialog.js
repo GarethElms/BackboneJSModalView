@@ -23,8 +23,8 @@ var ModalView =
             slideFromAbove: false,
             slideFromBelow: false,
             slideDistance: 150,
-			closeImageUrl: "/resources/shared/images/close-modal.png",
-			closeImageHoverUrl: "/resources/shared/images/close-modal-hover.png",
+			closeImageUrl: "close-modal.png",
+			closeImageHoverUrl: "close-modal-hover.png",
             css:
             {
                 "border": "2px solid #111",
