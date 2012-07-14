@@ -105,8 +105,7 @@ Boolean; default is true. Determines whether the modal dialog is displayed so it
 * Fixed a problem where the opaque blanket div didn't cover the entire screen when the window was scrolled. The modal blanket div's height is recalculated every time a dialog is displayed (in case the window height has changed since last time).
 * Added the recentre() function which you can call to recentre a modal dialog in case the content has changed. Useful if errors messages have been added for example. American's can use recenter().
 * Improved how the positioning works.
-* The showModal() function now return this.
-* Made all css overridable even the css that makes it work out of the box.
+* The showModal() function now returns this.
 * Added validation to the demo using [Thomas Pederson's excellent backbone.validation.js](https://github.com/thedersen/backbone.validation).
 
 ### v0.2
