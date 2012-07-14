@@ -2,7 +2,7 @@
 
 A base class for your Backbone js views which provides a showModal() method. 
 
-[See the demo page in action] (http://youtu.be/5K7QrJAxn24)
+[See the demo page live in action on www.garethelms.org] (http://www.garethelms.org/demo/backbone-js-modal-dialog/demo.html)
 
 ## How to use it
 
@@ -95,7 +95,19 @@ The url for the close icon on hover.
 ### css
 You can pass in any css you want to be applied to the modal dialog. See the [jQuery .css() docs] (http://api.jquery.com/css)
 
+### showModalAtScrollPosition
+Boolean; default is true. Determines whether the modal dialog is displayed so it is visible in a scrolled viewport (a sensible default), or is displayed at the top of the document where it might be invisible if the window has been scrolled down.
+
 # Release notes
+
+### v0.3
+* Added option showModalAtScrollPosition (default true) to determine whether the modal dialog is displayed so it is visible in a scrolled viewport (a sensible default), or is displayed at the top of the document where it might be invisible if the window has been scrolled down.
+* Fixed a problem where the opaque blanket div didn't cover the entire screen when the window was scrolled. The modal blanket div's height is recalculated every time a dialog is displayed (in case the window height has changed since last time).
+* Added the recentre() function which you can call to recentre a modal dialog in case the content has changed. Useful if errors messages have been added for example. American's can use recenter().
+* Improved how the positioning works.
+* The showModal() function now return this.
+* Made all css overridable even the css that makes it work out of the box.
+* Added validation to the demo using [Thomas Pederson's excellent backbone.validation.js](https://github.com/thedersen/backbone.validation).
 
 ### v0.2
 * Added option to render the modal dialog into a given container element allowing relative absolute positioning.

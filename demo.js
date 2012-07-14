@@ -1,6 +1,15 @@
 PersonModel = Backbone.Model.extend(
 	{
-		initialize: function() {}
+		validation:
+		{
+			name: {required:true, msg: "Please enter the person's name."},
+			phone: {required:true, msg: "Please enter the person's phone number."},
+			email:
+			[
+				{required:true, msg: "Please enter the person's email address."},
+				{pattern:"email", msg: "Please enter a valid email address"}
+			]
+		}
 	});
 	
 PeopleCollection = Backbone.Collection.extend(
@@ -41,38 +50,71 @@ AddPersonView = ModalView.extend(
 			{
 				_.bindAll( this, "render");
 				this.template = _.template( this.templateHtml);
-				this.model.bind( "isValid", this.modelIsValid, this);
-                this.model.bind( "isInvalid", this.modelIsInvalid, this);
+				Backbone.Validation.bind( this,  {valid:this.hideError, invalid:this.showError});
 			},
 		events:
 			{
+			     "change #email": "validateEmail",
 				"submit form": "addPerson"
 			},
-		modelIsValid:
-            function( model)
-            {
-				$("#addPersonButton").enable();
-            },
-        modelIsInvalid:
-            function( model)
-            {
-				$("#addPersonButton").disable();
-            },
+		getCurrentFormValues:
+			function()
+			{
+				return {
+					name: $("#name").val(),
+					email: $("#email").val(),
+					phone: $("#phone").val()};
+			},
+		validateEmail:
+			function()
+			{
+				this.model.set( {email: $("#email").val()});
+			},
+		hideError:
+			function(  view, attr, selector)
+			{
+				var $element = view.$form[attr];
+				
+				$element.removeClass( "error");
+				$element.parent().find( ".error-message").empty();
+			},
+		showError:
+			function( view, attr, errorMessage, selector)
+			{
+				var $element = view.$form[attr];
+				
+				$element.addClass( "error");
+				var $errorMessage = $element.parent().find(".error-message");
+				if( $errorMessage.length == 0)
+				{
+					$errorMessage = $("<div class='error-message'></div>");
+					$element.parent().append( $errorMessage);
+				}
+				
+				$errorMessage.empty().append( errorMessage);
+			},
 		addPerson:
 			function( event)
 			{
 				event.preventDefault();
-				this.hideModal();
-				_people.add(
-					new PersonModel({
-						name: $("#name").val(),
-						email: $("#email").val(),
-						phone: $("#phone").val()}));
+				
+				if( this.model.set( this.getCurrentFormValues()))
+				{
+					this.hideModal();
+					_people.add( this.model);
+				}
 			},
+			
 		render:
 			function()
 			{
 				$(this.el).html( this.template());
+				
+				this.$form = {
+					name: this.$("#name"),
+					email: this.$("#email"),
+					phone: this.$("#phone")}
+					
 				return this;
 			}
 	});
