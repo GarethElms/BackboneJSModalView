@@ -28,6 +28,9 @@
 				<a href="#" id="test-no-config">No config</a>
 			</p>
 			<p>
+				<a href="#" id="test-permanent">Permanent modal</a>
+			</p>
+			<p>
 				<a href="#" id="test-anchor-header-left">Anchored to header (left)</a>
 			</p>
 			<p>
@@ -84,7 +87,8 @@ $(document).ready(
 				event.preventDefault();
 				event.stopPropagation();
 				
-				var view = new AddPersonView();
+				var model = new PersonModel();
+				var view = new AddPersonView( {model:model});
 				view.render().showModal();
 			});
 			
@@ -94,7 +98,8 @@ $(document).ready(
 				event.preventDefault();
 				event.stopPropagation();
 				
-				var view = new AddPersonView();
+				var model = new PersonModel();
+				var view = new AddPersonView( {model:model});
 				view.render().showModal(
 					{
 						"slideFromAbove": true,
@@ -111,7 +116,8 @@ $(document).ready(
 				event.preventDefault();
 				event.stopPropagation();
 				
-				var view = new AddPersonView();
+				var model = new PersonModel();
+				var view = new AddPersonView( {model:model});
 				view.render().showModal(
 					{
 						"slideFromBelow": true,
@@ -120,6 +126,14 @@ $(document).ready(
 							"right": "0px",
 							"top": "0px"}
 					});
+			});
+		
+		$("#test-permanent").click(
+			function( event)
+			{
+				event.preventDefault();
+				var view = new PermanentView();
+				view.render().showModal( {permanentlyVisible: true});
 			});
 	}
 	

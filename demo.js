@@ -17,7 +17,7 @@ PeopleCollection = Backbone.Collection.extend(
 		model: PersonModel
 	});
 	
-AddPersonView = ModalView.extend(
+AddPersonView = Backbone.ModalView.extend(
 	{
 		name: "AddPersonView",
 		model: PersonModel,
@@ -119,6 +119,40 @@ AddPersonView = ModalView.extend(
 			}
 	});
 
+PermanentView = Backbone.ModalView.extend(
+	{
+		template: "<p style='padding:0 1em;'>Please wait while I prevent you from doing anything.</p>",
+		initialize:
+			function()
+			{
+				this.template = _.template( this.template);
+			},
+		events:
+			{
+				"click #escape-route": "close"
+			},
+		close:
+			function( event)
+			{
+				event.preventDefault();
+				this.hideModal();
+				$('#test-permanent').append( "<span style='font-size:70%;'>. I enjoyed that.</span>");
+			},
+		escapeRoute:
+			function( view)
+			{
+				this.$el.append( "<p style='padding:0 1em; text-align:center;'><a href='' id='escape-route'>Ok, I'll let you close now. But I don't have to.</a></p>");
+			},
+		render:
+			function()
+			{
+				this.$el.html( this.template());
+				window.setTimeout( _.bind( this.escapeRoute, this), 5000);
+				return this;
+			}
+	});
+
+	
 PersonItemView = Backbone.View.extend(
 	{
 		templateHtml:

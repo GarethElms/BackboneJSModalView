@@ -98,7 +98,22 @@ You can pass in any css you want to be applied to the modal dialog. See the [jQu
 ### showModalAtScrollPosition
 Boolean; default is true. Determines whether the modal dialog is displayed so it is visible in a scrolled viewport (a sensible default), or is displayed at the top of the document where it might be invisible if the window has been scrolled down.
 
+### permanentlyVisible
+Boolean; default is false. This prevents the modal from being closed, effectively blocking the ui permanently. The same as setting backgroundClickClosesModal, pressingEscapeClosesModal and showCloseButton to false.
+
+### backgroundClickClosesModal
+Boolean; default is true. Clicking in the background outside of the modal will close the modal by default.
+
+### pressingEscapeClosesModal
+Boolean; default is true. Pressing the escape button will close the modal by default.
+
 # Release notes
+
+### v0.31
+* Added option permanentlyVisible to prevent the modal window being closed.
+* Added option backgroundClickClosesModal to control whether a mouse click in the background will close the modal (default is true).
+* Added option pressingEscapeClosesModal to control whether pressing the escape button will close the modal (default is true).
+* Placed the ModalDialog object in the Backbone namespace.
 
 ### v0.3
 * Added option showModalAtScrollPosition (default true) to determine whether the modal dialog is displayed so it is visible in a scrolled viewport (a sensible default), or is displayed at the top of the document where it might be invisible if the window has been scrolled down.

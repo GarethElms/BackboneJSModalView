@@ -1,4 +1,4 @@
-// Backbone.ModalDialog.js v0.2
+// Backbone.ModalDialog.js v0.31
 //
 // Copyright (C)2012 Gareth Elms
 // Distributed under MIT License
@@ -6,7 +6,7 @@
 // Documentation and full license availabe at:
 // https://github.com/GarethElms/BackboneJSModalView
 
-var ModalView =
+Backbone.ModalView =
     Backbone.View.extend(
     {
         name: "ModalView",
@@ -26,7 +26,9 @@ var ModalView =
 			closeImageUrl: "close-modal.png",
 			closeImageHoverUrl: "close-modal-hover.png",
 			showModalAtScrollPosition: true,
-
+			permanentlyVisible: false,
+            backgroundClickClosesModal: true,
+            pressingEscapeClosesModal: true,
             css:
             {
                 "border": "2px solid #111",
@@ -129,7 +131,7 @@ var ModalView =
         keyup:
             function( event)
             {
-                if( event.keyCode == 27)
+                if( event.keyCode == 27 && this.options.pressingEscapeClosesModal)
                 {
                     this.hideModal();
                 }
@@ -138,7 +140,7 @@ var ModalView =
         click:
             function( event)
             {
-                if( event.target.id == "modal-blanket")
+                if( event.target.id == "modal-blanket" && this.options.backgroundClickClosesModal)
                 {
                     this.hideModal();
                 }
@@ -239,6 +241,13 @@ var ModalView =
             {
                 this.defaultOptions.targetContainer = document.body;
                 this.options = $.extend( true, {}, this.defaultOptions, options, this.options);
+
+				if( this.options.permanentlyVisible)
+                {
+                    this.options.showCloseButton = false;
+                    this.options.backgroundClickClosesModal = false;
+                    this.options.pressingEscapeClosesModal = false;
+                }
 
                 //Set the center alignment padding + border see css style
                 var $el = $(this.el);
