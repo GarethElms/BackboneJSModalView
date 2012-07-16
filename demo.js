@@ -142,6 +142,7 @@ PermanentView = Backbone.ModalView.extend(
 			function( view)
 			{
 				this.$el.append( "<p style='padding:0 1em; text-align:center;'><a href='' id='escape-route'>Ok, I'll let you close now. But I don't have to.</a></p>");
+				this.recentre();
 			},
 		render:
 			function()
