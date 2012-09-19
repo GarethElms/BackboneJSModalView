@@ -109,7 +109,10 @@ Boolean; default is true. Pressing the escape button will close the modal by def
 
 # Release notes
 
-### v0.31
+### v0.3.2
+* Fix for mobile Safari click event on modal blanket. backgroundClickClosesModal now works on mobile Safari.
+
+### v0.3.1
 * Added option permanentlyVisible to prevent the modal window being closed.
 * Added option backgroundClickClosesModal to control whether a mouse click in the background will close the modal (default is true).
 * Added option pressingEscapeClosesModal to control whether pressing the escape button will close the modal (default is true).
