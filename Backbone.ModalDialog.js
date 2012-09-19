@@ -1,4 +1,4 @@
-// Backbone.ModalDialog.js v0.31
+// Backbone.ModalDialog.js v0.3.2
 //
 // Copyright (C)2012 Gareth Elms
 // Distributed under MIT License
@@ -163,7 +163,7 @@ Backbone.ModalView =
 
                 this.hideModalBlanket();
                 $(document.body).unbind( "keyup", this.keyup);
-                $(document.body).unbind( "click", this.click);
+                this.modalBlanket.unbind( "click", this.click);
 
                 if( this.options.bodyOverflowHidden === true)
                 {
@@ -271,8 +271,8 @@ Backbone.ModalView =
                 this.showModalBlanket();
                 this.keyup = _.bind( this.keyup, this);
                 this.click = _.bind( this.click, this);
-                $(document.body).keyup( this.keyup); // This handler is unbound in hideDialog()
-                $(document.body).click( this.click); // This handler is unbound in hideDialog()
+                $(document.body).keyup( this.keyup); // This handler is unbound in hideModal()
+                this.modalBlanket.click( this.click); // This handler is unbound in hideModal()
 
                 if( this.options.bodyOverflowHidden === true)
                 {
